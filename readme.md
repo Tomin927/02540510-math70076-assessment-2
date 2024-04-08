@@ -49,7 +49,7 @@ The `dataset.csv` contains the track information on Spotify for 125 different ge
 The `dataset.csv` is recorded as following:
 
 |                  |                             |                    |                     |                |                    |                 |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+|------------------|-----------------------------|--------------------|---------------------|----------------|--------------------|-----------------|
 | **\#**           | **track_id**                | **artists**        | **album_name**      | **track_name** | **popularity**     | **duration_ms** |
 | *int.*           | *str.*                      | *str.*             | *str.*              | *str.*         | *num.*             | *num.*          |
 | 0 \~ 113999      | e.g. 2hETkH7cOfqmz3LqZDHZf5 | e.g. Cesária Evora | e.g. Miss Perfumado | e.g. Barbincor | 0 \~ 100           | e.g. 241826     |
