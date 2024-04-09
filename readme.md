@@ -55,7 +55,7 @@ The data analysis file is `statistical_analysis.R`.
 ## The summary of numerical variables
 
 | Variable            | Mean    | Variance    | Min-Median-Max           | 1st Qu. - 3rd Qu. |
-|---------------|---------------|---------------|---------------|---------------|
+|---------------------|---------|-------------|--------------------------|-------------------|
 | Popularity (Target) | 33.24   | 22.31\^2    | 0 - 35 - 100             | 17 - 50           |
 | 1 duration_ms       | 228029  | 107297.7\^2 | 0 - 212906 -5237295      | 174066 - 261506   |
 | 2 danceability      | 0.5668  | 0.17\^2     | 0 - 0.58 - 0.985         | 0.456 - 0.695     |
@@ -73,6 +73,14 @@ The data analysis file is `statistical_analysis.R`.
 
 ## The distribution of target variable in dataset `dataset.csv`
 
-The distribution of the target variable `popularity` is shown below. The histogram of track popularity shows that the majority of tracks are very unpopular, because there are too many tracks with 0 popularity, and only a small percentage of tracks are popular (in this case, popular $\implies$ populary $\geq 60$), with mean popularity $\leq 40$. This pattern indicates than the distribution of the dataset is unbalanced (i.e. too many 0 popular tracks), and it is necessary to modify the dataset such as removing all records with 0 popularity.
+The distribution of the target variable `popularity` is shown below. The histogram of track popularity shows that the majority of tracks are very unpopular, because there are too many tracks with 0 popularity, and only a small percentage of tracks are popular (in this case, popular $\implies$ populary $\geq 60$), with mean popularity $\leq 40$ (red fitted normal distribution). This pattern indicates than the distribution of the dataset is unbalanced (i.e. too many 0 popular tracks), and it is necessary to modify the dataset such as removing all records with 0 popularity.
 
-![](img/Histogram_of_track_popularity.png)
+![](img/Histogram_of_track_popularity.png){width="450"}
+
+## The distribution of explainatory variable v.s. popularity
+
+It is difficult to see a strong linear ralationship between the explainatory variables and the popularity (cyan - popular, red - unpopular), and the linear regression model is not an aproproate method to fit the dataset well. Moreover, there is a weak linear/quadratic relationship among explainatory variables such as loudness vs energy and dancibility vs tempo.
+
+![](img/Explanatory_vs_target_1.png){width="600"} ![](img/Explanatory_vs_target_2.png){width="600"} ![](img/Explanatory_vs_target_3.png){width="600"}
+
+![](img/Explanatory_vs_Explanatory.png){width="600"}
