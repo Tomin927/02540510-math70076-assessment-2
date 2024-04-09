@@ -75,6 +75,4 @@ The data analysis file is `statistical_analysis.R`.
 
 The distribution of the target variable `popularity` is shown below. The histogram of track popularity shows that the majority of tracks are very unpopular, because there are too many tracks with 0 popularity, and only a small percentage of tracks are popular (in this case, popular $\implies$ populary $\geq 60$), with mean popularity $\leq 40$. This pattern indicates than the distribution of the dataset is unbalanced (i.e. too many 0 popular tracks), and it is necessary to modify the dataset such as removing all records with 0 popularity.
 
-![](image/Histogram of track popularity.png)
-
-
+![](image/Histogram_of_track_popularity.png)
