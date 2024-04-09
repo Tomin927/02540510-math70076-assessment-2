@@ -79,8 +79,12 @@ The distribution of the target variable `popularity` is shown below. The histogr
 
 ## The distribution of explainatory variable v.s. popularity
 
-It is difficult to see a strong linear ralationship between the explainatory variables and the popularity (cyan - popular, red - unpopular), and the linear regression model is not an aproproate method to fit the dataset well. Moreover, there is a weak linear/quadratic relationship among explainatory variables such as loudness vs energy and dancibility vs tempo.
+It is difficult to see a strong linear ralationship between the explainatory variables and the popularity (cyan - popular, red - unpopular), and the linear regression model is not an aproproate method to fit the dataset well. Moreover, there is a weak linear/quadratic relationship among some explainatory variables such as loudness vs energy and dancibility vs tempo.
 
 ![](img/Explanatory_vs_target_1.png) ![](img/Explanatory_vs_target_2.png) ![](img/Explanatory_vs_target_3.png)
 
 ![](img/Explanatory_vs_Explanatory.png)
+
+The heat plot of covariance among explainatory variables is shown below. Overall, most variables are uncorrelated, but there are still some potential issues with multicollinearity; For example, 'acousticness' is negatively correlated with 'energy' and 'loudness' (covariance $= -0.73, -0.59$), and 'loudness' is strongly positively correlated (covariance $= 0.76$), which may potentially cause problems when fitting a linear regression model.
+
+![](img/Covariance_plot.png)
