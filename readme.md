@@ -55,7 +55,7 @@ The data analysis file is `statistical_analysis.R`.
 ## The summary of numerical variables
 
 | Variable            | Mean    | Variance    | Min-Median-Max           | 1st Qu. - 3rd Qu. |
-|---------------------|---------|-------------|--------------------------|-------------------|
+|---------------|---------------|---------------|---------------|---------------|
 | Popularity (Target) | 33.24   | 22.31\^2    | 0 - 35 - 100             | 17 - 50           |
 | 1 duration_ms       | 228029  | 107297.7\^2 | 0 - 212906 -5237295      | 174066 - 261506   |
 | 2 danceability      | 0.5668  | 0.17\^2     | 0 - 0.58 - 0.985         | 0.456 - 0.695     |
@@ -85,6 +85,52 @@ It is difficult to see a strong linear ralationship between the explainatory var
 
 ![](img/Explanatory_vs_Explanatory.png)
 
-The heat plot of covariance among explainatory variables is shown below. Overall, most variables are uncorrelated, but there are still some potential issues with multicollinearity; For example, 'acousticness' is negatively correlated with 'energy' and 'loudness' (covariance $= -0.73, -0.59$), and 'loudness' is strongly positively correlated (covariance $= 0.76$), which may potentially cause problems when fitting a linear regression model.
+The heat plot of covariance among explainatory variables is shown below. Overall, most variables are uncorrelated, but there are still some potential issues with multicollinearity; For example, 'acousticness' is negatively correlated with 'energy' and 'loudness' (covariance $= -0.73, -0.59$), and 'loudness' is strongly positively correlated (covariance $= 0.76$) with 'energy', which may potentially cause problems when fitting a linear regression model.
 
 ![](img/Covariance_plot.png)
+
+## Dataset Summary
+
+There may be issues if the dataset is used directly to fit the model.
+
+-   There are too many tracks with popularity $= 0$ (16020 tracks, $\approx 14 \%$)
+-   Multicollinearity may cause problems (acousticness-energy and loudness-energy)
+
+# **The linear regression model**
+
+------------------------------------------------------------------------
+
+Results of the first linear regression model is as follows:
+
+```         
+lm(formula = popularity ~ duration_ms + danceability + energy + 
+    key + loudness + mode + speechiness + acousticness + instrumentalness + 
+    liveness + valence + tempo + time_signature)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-47.436 -13.649   0.103  13.431  58.031 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       4.996e+01  8.039e-01  62.142  < 2e-16 ***
+duration_ms      -8.029e-06  5.492e-07 -14.620  < 2e-16 ***
+danceability      7.629e+00  4.212e-01  18.112  < 2e-16 ***
+energy           -7.556e+00  4.861e-01 -15.542  < 2e-16 ***
+key              -1.735e-02  1.689e-02  -1.027 0.304481    
+loudness          2.464e-01  2.142e-02  11.502  < 2e-16 ***
+mode             -6.999e-01  1.258e-01  -5.562 2.67e-08 ***
+speechiness      -1.760e+01  5.742e-01 -30.653  < 2e-16 ***
+acousticness     -1.633e+00  2.760e-01  -5.916 3.30e-09 ***
+instrumentalness -1.206e+01  2.267e-01 -53.198  < 2e-16 ***
+liveness         -2.272e+00  3.251e-01  -6.988 2.81e-12 ***
+valence          -7.910e+00  2.857e-01 -27.688  < 2e-16 ***
+tempo            -7.689e-03  2.068e-03  -3.717 0.000201 ***
+time_signature    7.326e-01  1.424e-01   5.145 2.68e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 18.58 on 97966 degrees of freedom
+Multiple R-squared:  0.06341,   Adjusted R-squared:  0.06329 
+F-statistic: 510.2 on 13 and 97966 DF,  p-value: < 2.2e-16
+```
