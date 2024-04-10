@@ -79,7 +79,7 @@ The distribution of the target variable `popularity` is shown below. The histogr
 
 ## The distribution of explainatory variable v.s. popularity
 
-It is difficult to see a strong linear ralationship between the explainatory variables and the popularity (cyan - popular, red - unpopular), and the linear regression model is not an aproproate method to fit the dataset well. Moreover, there is a weak linear/quadratic relationship among some explainatory variables such as loudness vs energy and dancibility vs tempo.
+It is difficult to see a strong linear ralationship between the explainatory variables and the popularity (cyan - popular, red - unpopular), and the linear regression model may difficult to fit the dataset well. Moreover, there is a weak linear/quadratic relationship among some explainatory variables such as loudness vs energy and dancibility vs tempo.
 
 ![](img/Explanatory_vs_target_1.png) ![](img/Explanatory_vs_target_2.png) ![](img/Explanatory_vs_target_3.png)
 
@@ -93,14 +93,16 @@ The heat plot of covariance among explainatory variables is shown below. Overall
 
 There may be issues if the dataset is used directly to fit the model.
 
--   There are too many tracks with popularity $= 0$ (16020 tracks, $\approx 14 \%$)
+-   There are too many tracks with popularity $= 0$ (16020 tracks, $\approx 14$ %)
 -   Multicollinearity may cause problems (acousticness-energy and loudness-energy)
 
 # **The linear regression model**
 
 ------------------------------------------------------------------------
 
-Results of the first linear regression model is as follows:
+Since the linear regresssion model is the simplest statistical model ("Simple is good!!"), it was the model that was applied to the dataset. For the purpose of evaluating the model, a linear regresssion model can also predict an exact popularity score for a track. It is also essential to filter and split the raw dataset (train/test - 70/30) and determine which features need to be transformed or eliminated in order to fit the model well.
+
+Before applying data filtering and variable transformation, the initial linear regression model has a multiple R-squared value of 0.06506 (only $6$% of variation in popularity accounted for by model variates).
 
 ```         
 lm(formula = popularity ~ duration_ms + danceability + energy + 
@@ -109,28 +111,42 @@ lm(formula = popularity ~ duration_ms + danceability + energy +
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--47.436 -13.649   0.103  13.431  58.031 
+-46.982 -13.627   0.022  13.407  57.420 
 
 Coefficients:
                    Estimate Std. Error t value Pr(>|t|)    
-(Intercept)       4.996e+01  8.039e-01  62.142  < 2e-16 ***
-duration_ms      -8.029e-06  5.492e-07 -14.620  < 2e-16 ***
-danceability      7.629e+00  4.212e-01  18.112  < 2e-16 ***
-energy           -7.556e+00  4.861e-01 -15.542  < 2e-16 ***
-key              -1.735e-02  1.689e-02  -1.027 0.304481    
-loudness          2.464e-01  2.142e-02  11.502  < 2e-16 ***
-mode             -6.999e-01  1.258e-01  -5.562 2.67e-08 ***
-speechiness      -1.760e+01  5.742e-01 -30.653  < 2e-16 ***
-acousticness     -1.633e+00  2.760e-01  -5.916 3.30e-09 ***
-instrumentalness -1.206e+01  2.267e-01 -53.198  < 2e-16 ***
-liveness         -2.272e+00  3.251e-01  -6.988 2.81e-12 ***
-valence          -7.910e+00  2.857e-01 -27.688  < 2e-16 ***
-tempo            -7.689e-03  2.068e-03  -3.717 0.000201 ***
-time_signature    7.326e-01  1.424e-01   5.145 2.68e-07 ***
+(Intercept)       5.027e+01  9.612e-01  52.295  < 2e-16 ***
+duration_ms      -8.630e-06  6.809e-07 -12.674  < 2e-16 ***
+danceability      7.743e+00  5.032e-01  15.386  < 2e-16 ***
+energy           -7.663e+00  5.808e-01 -13.194  < 2e-16 ***
+key              -4.421e-02  2.019e-02  -2.190  0.02851 *  
+loudness          2.560e-01  2.564e-02   9.986  < 2e-16 ***
+mode             -5.897e-01  1.503e-01  -3.922 8.78e-05 ***
+speechiness      -1.809e+01  6.810e-01 -26.569  < 2e-16 ***
+acousticness     -1.651e+00  3.293e-01  -5.014 5.35e-07 ***
+instrumentalness -1.209e+01  2.706e-01 -44.689  < 2e-16 ***
+liveness         -2.287e+00  3.893e-01  -5.873 4.29e-09 ***
+valence          -7.841e+00  3.413e-01 -22.975  < 2e-16 ***
+tempo            -7.307e-03  2.471e-03  -2.957  0.00311 ** 
+time_signature    7.234e-01  1.694e-01   4.271 1.95e-05 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 18.58 on 97966 degrees of freedom
-Multiple R-squared:  0.06341,   Adjusted R-squared:  0.06329 
-F-statistic: 510.2 on 13 and 97966 DF,  p-value: < 2.2e-16
+Residual standard error: 18.57 on 68572 degrees of freedom
+Multiple R-squared:  0.06506,   Adjusted R-squared:  0.06488 
+F-statistic:   367 on 13 and 68572 DF,  p-value: < 2.2e-16
 ```
+
+The multi-collinearity problem is then assessed by VIF coefficients of benchmark $= 5$, and the varibale 'energy', 'loudness', and 'acousticness' have higher VIF value with $4.222973$, $3.261579$, and $2.353495$, respectively, compared to other variables, while all lower than $5$. The significance of features are assess by the hypothesis test and p-values. The distribution of each feature is plotted to determine an appropriate transformation, and the unit of duration is changed into minute.
+
+![](img/Distribution_of_target_and_features.png) ![](img/Distribution_of_transformed_feature.png)
+
+-   'duration_ms' - too right skewed.
+
+-   'speechiness' - almost all tracks are music and non-speech-like
+
+-   'acousticness', 'instrumentalness', 'liveness' - highly right skewed (range 0 \~ 1) 'danceability',
+
+-   'valence', 'tempo' - bell shaped, normal distributed
+
+After eliminating the insignificant features and multi-collinearity problems, the results of the first linear regression model is as follows:
