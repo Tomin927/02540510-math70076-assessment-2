@@ -55,7 +55,7 @@ The data analysis file is `statistical_analysis.R`.
 ## The summary of numerical variables
 
 | Variable            | Mean    | Variance    | Min-Median-Max           | 1st Qu. - 3rd Qu. |
-|---------------------|---------|-------------|--------------------------|-------------------|
+|---------------|---------------|---------------|---------------|---------------|
 | Popularity (Target) | 33.24   | 22.31\^2    | 0 - 35 - 100             | 17 - 50           |
 | 1 duration_ms       | 228029  | 107297.7\^2 | 0 - 212906 -5237295      | 174066 - 261506   |
 | 2 danceability      | 0.5668  | 0.17\^2     | 0 - 0.58 - 0.985         | 0.456 - 0.695     |
@@ -139,7 +139,7 @@ F-statistic:   367 on 13 and 68572 DF,  p-value: < 2.2e-16
 
 The performance of the model is shown below. It shows that this model is difficult to accurately predict tracks with high popularity. This issue may caused by the insufficience of data of popular tracks.
 
-![](img/Evaluation_1.png)
+![](img/Evaluation_1.png) ![](img/Evaluate_1_1.png)
 
 There are also some issue within the dataset. The multi-collinearity problem is then assessed by VIF coefficients of benchmark $= 5$, and the varibale 'energy', 'loudness', and 'acousticness' have higher VIF value with $4.222973$, $3.261579$, and $2.353495$, respectively, compared to other variables, while all lower than $5$. The significance of features are assess by the hypothesis test and p-values, and 4 features should be removed ('key', 'mode', 'tempo', and 'time_signature' with p-values $>0.05$). The distribution of each feature is plotted to determine an appropriate transformation, and the unit of duration is converted into minute.
 
@@ -153,7 +153,7 @@ There are also some issue within the dataset. The multi-collinearity problem is 
 
 -   'valence', 'tempo' - bell shaped, normal distributed
 
-After eliminating the insignificant features and multi-collinearity problems, the results of the first linear regression model is as follows:
+After eliminating the insignificant features and multi-collinearity problems, the results of the linear regression model is as follows:
 
 ```         
 lm(formula = popularity ~ duration_m + danceability + energy + 
@@ -184,4 +184,4 @@ Multiple R-squared:  0.06445,   Adjusted R-squared:  0.06433
 F-statistic: 524.9 on 9 and 68576 DF,  p-value: < 2.2e-16
 ```
 
-![](img/Evaluation_2.png)
+![](img/Evaluation_2.png) ![](img/Evaluate_2_1.png)
