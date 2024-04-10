@@ -55,7 +55,7 @@ The data analysis file is `statistical_analysis.R`.
 ## The summary of numerical variables
 
 | Variable            | Mean    | Variance    | Min-Median-Max           | 1st Qu. - 3rd Qu. |
-|---------------|---------------|---------------|---------------|---------------|
+|---------------------|---------|-------------|--------------------------|-------------------|
 | Popularity (Target) | 33.24   | 22.31\^2    | 0 - 35 - 100             | 17 - 50           |
 | 1 duration_ms       | 228029  | 107297.7\^2 | 0 - 212906 -5237295      | 174066 - 261506   |
 | 2 danceability      | 0.5668  | 0.17\^2     | 0 - 0.58 - 0.985         | 0.456 - 0.695     |
@@ -137,7 +137,11 @@ Multiple R-squared:  0.06506,   Adjusted R-squared:  0.06488
 F-statistic:   367 on 13 and 68572 DF,  p-value: < 2.2e-16
 ```
 
-The multi-collinearity problem is then assessed by VIF coefficients of benchmark $= 5$, and the varibale 'energy', 'loudness', and 'acousticness' have higher VIF value with $4.222973$, $3.261579$, and $2.353495$, respectively, compared to other variables, while all lower than $5$. The significance of features are assess by the hypothesis test and p-values. The distribution of each feature is plotted to determine an appropriate transformation, and the unit of duration is changed into minute.
+The performance of the model is shown below. It shows that this model is difficult to accurately predict tracks with high popularity. This issue may caused by the insufficience of data of popular tracks.
+
+![](img/Evaluation_1.png)
+
+There are also some issue within the dataset. The multi-collinearity problem is then assessed by VIF coefficients of benchmark $= 5$, and the varibale 'energy', 'loudness', and 'acousticness' have higher VIF value with $4.222973$, $3.261579$, and $2.353495$, respectively, compared to other variables, while all lower than $5$. The significance of features are assess by the hypothesis test and p-values, and 4 features should be removed ('key', 'mode', 'tempo', and 'time_signature' with p-values $>0.05$). The distribution of each feature is plotted to determine an appropriate transformation, and the unit of duration is converted into minute.
 
 ![](img/Distribution_of_target_and_features.png) ![](img/Distribution_of_transformed_feature.png)
 
@@ -150,3 +154,34 @@ The multi-collinearity problem is then assessed by VIF coefficients of benchmark
 -   'valence', 'tempo' - bell shaped, normal distributed
 
 After eliminating the insignificant features and multi-collinearity problems, the results of the first linear regression model is as follows:
+
+```         
+lm(formula = popularity ~ duration_m + danceability + energy + 
+    loudness + speechiness + acousticness + instrumentalness + 
+    liveness + valence)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-46.768 -13.640  -0.013  13.373  56.605 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       51.21407    0.65629  78.036  < 2e-16 ***
+duration_m        -0.51286    0.04084 -12.557  < 2e-16 ***
+danceability       8.35660    0.49282  16.957  < 2e-16 ***
+energy            -7.57585    0.57904 -13.083  < 2e-16 ***
+loudness           0.25322    0.02558   9.899  < 2e-16 ***
+speechiness      -18.15862    0.68016 -26.697  < 2e-16 ***
+acousticness      -1.67799    0.32860  -5.107 3.29e-07 ***
+instrumentalness -12.07620    0.27033 -44.672  < 2e-16 ***
+liveness          -2.27516    0.38866  -5.854 4.83e-09 ***
+valence           -7.97455    0.34001 -23.454  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 18.58 on 68576 degrees of freedom
+Multiple R-squared:  0.06445,   Adjusted R-squared:  0.06433 
+F-statistic: 524.9 on 9 and 68576 DF,  p-value: < 2.2e-16
+```
+
+![](img/Evaluation_2.png)
