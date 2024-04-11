@@ -55,7 +55,7 @@ The data analysis file is `statistical_analysis.R`.
 ## The summary of numerical variables
 
 | Variable            | Mean    | Variance    | Min-Median-Max           | 1st Qu. - 3rd Qu. |
-|---------------|---------------|---------------|---------------|---------------|
+|---------------------|---------|-------------|--------------------------|-------------------|
 | Popularity (Target) | 33.24   | 22.31\^2    | 0 - 35 - 100             | 17 - 50           |
 | 1 duration_ms       | 228029  | 107297.7\^2 | 0 - 212906 -5237295      | 174066 - 261506   |
 | 2 danceability      | 0.5668  | 0.17\^2     | 0 - 0.58 - 0.985         | 0.456 - 0.695     |
@@ -137,7 +137,7 @@ Multiple R-squared:  0.06506,   Adjusted R-squared:  0.06488
 F-statistic:   367 on 13 and 68572 DF,  p-value: < 2.2e-16
 ```
 
-The performance of the model is shown below. It shows that this model is difficult to accurately predict tracks with high popularity. This issue may caused by the insufficience of data of popular tracks.
+The second plot of 'Tracks vs Popularity' shows the performance of the linear regression model in terms of accuracy (within 1 unit of standard deviation around the true value of popularity). Tracks with high popularity are rarely predicted accurately.
 
 ![](img/Evaluation_1.png) ![](img/Evaluate_1_1.png)
 
@@ -153,7 +153,7 @@ There are also some issue within the dataset. The multi-collinearity problem is 
 
 -   'valence', 'tempo' - bell shaped, normal distributed
 
-After eliminating the insignificant features and multi-collinearity problems, the results of the linear regression model is as follows:
+After eliminating the insignificant features and multi-collinearity problems, the results of the linear regression model is as follows, and the model is difficult to accurately predict tracks with high popularity. This issue may caused by the insufficience of data of popular tracks:
 
 ```         
 lm(formula = popularity ~ duration_m + danceability + energy + 
@@ -185,3 +185,31 @@ F-statistic: 524.9 on 9 and 68576 DF,  p-value: < 2.2e-16
 ```
 
 ![](img/Evaluation_2.png) ![](img/Evaluate_2_1.png)
+
+## Resampling methods
+
+An imbalanced regression problems occur when the target variable of a model has a skewed distribution (too many tracks below the popularity benchmark), and it leads to poor performance and biased predictions. Resampling the data is one technique to address unbalanced regression issues. This can be done by either eliminating some samples of the overrepresented values (undersampling) or by adding more samples of the underrepresented values (oversampling). A sample of 50/50 popular and unpopular tunes is taken from the dataset, and the popularity of a track is indicated by the hyperparameter $k \in (0,100)$ (popular if popularity $> k$).
+
+For $k = 60, 65, 70, 75, 80$, the model performance has been improved when predicting popular tracks:
+
+![](img/R_comparison.png)
+
+-   $k = 60$
+
+![](img/Evaluate_subsampling_1.png)![](img/Evaluate_subsampling_1_1.png)
+
+-   $k = 65$
+
+![](img/Evaluate_subsampling_2.png)![](img/Evaluate_subsampling_2_1.png)
+
+-   \$k = 70
+
+![](img/Evaluate_subsampling_3.png)![](img/Evaluate_subsampling_3_1.png)
+
+-   \$k = 75
+
+![](img/Evaluate_subsampling_4.png)![](img/Evaluate_subsampling_4_1.png)
+
+-   \$k = 80
+
+![](img/Evaluate_subsampling_5.png)![](img/Evaluate_subsampling_5_1.png)
