@@ -55,7 +55,7 @@ The data analysis file is `statistical_analysis.R`.
 ## The summary of numerical variables
 
 | Variable            | Mean    | Variance    | Min-Median-Max           | 1st Qu. - 3rd Qu. |
-|---------------------|---------|-------------|--------------------------|-------------------|
+|---------------|---------------|---------------|---------------|---------------|
 | Popularity (Target) | 33.24   | 22.31\^2    | 0 - 35 - 100             | 17 - 50           |
 | 1 duration_ms       | 228029  | 107297.7\^2 | 0 - 212906 -5237295      | 174066 - 261506   |
 | 2 danceability      | 0.5668  | 0.17\^2     | 0 - 0.58 - 0.985         | 0.456 - 0.695     |
@@ -213,3 +213,44 @@ For $k = 60, 65, 70, 75, 80$, the model performance has been improved when predi
 -   \$k = 80
 
 ![](img/Evaluate_subsampling_5.png)![](img/Evaluate_subsampling_5_1.png)
+
+The results of the final linear regression model is as follows:
+
+```         
+lm(formula = popularity ~ duration_m + danceability + energy + 
+    loudness + speechiness + acousticness + instrumentalness + 
+    liveness + valence)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-75.631 -17.872   7.952  17.488  62.627 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      102.9725     6.5452  15.732  < 2e-16 ***
+duration_m        -2.6303     0.5126  -5.132 3.28e-07 ***
+danceability      19.9951     4.4948   4.448 9.34e-06 ***
+energy           -29.2433     5.6910  -5.138 3.16e-07 ***
+loudness           1.0452     0.2768   3.776 0.000166 ***
+speechiness      -13.4868     6.2373  -2.162 0.030766 *  
+acousticness     -17.7955     3.0212  -5.890 4.83e-09 ***
+instrumentalness -30.7116     3.1191  -9.846  < 2e-16 ***
+liveness         -18.0927     4.0559  -4.461 8.82e-06 ***
+valence          -10.6481     3.0270  -3.518 0.000449 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 23.43 on 1390 degrees of freedom
+Multiple R-squared:  0.2318,    Adjusted R-squared:  0.2268 
+F-statistic:  46.6 on 9 and 1390 DF,  p-value: < 2.2e-16
+```
+
+The final linear regression model has a multiple R-squared value of 0.2318 (only $23$% of variation in popularity accounted for by model variates), and the performance has been significantly improved. Finally, the effects of features on the track popularity are represented by the size of model coefficients.
+
+![](img/Effect_of_features.png)
+
+# Conclusion
+
+------------------------------------------------------------------------
+
+The feature 'danceability' has the most positive effect on the track popularity, while features 'instrumentalness' and 'energy' have the most negative impact. Other features such as 'loudness' and 'duration_m' have little efffects on the popularity.
